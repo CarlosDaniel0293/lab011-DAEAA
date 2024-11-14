@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votación de Películas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 3rem;
+        }
+        h1 {
+            color: #ffca28;
+        }
+        .card {
+            background-color: #1e1e1e;
+            border: none;
+        }
+        .card-title, .card-text {
+            color: #ffffff;
+        }
+        .btn-primary {
+            background-color: #ff7043;
+            border-color: #ff7043;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #ff5722;
+            border-color: #ff5722;
+        }
+        .btn-secondary {
+            background-color: #78909c;
+            border-color: #78909c;
+            color: #ffffff;
+        }
+        .btn-secondary:hover {
+            background-color: #546e7a;
+            border-color: #546e7a;
+        }
+        .row {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+        .card-img-top {
+            border-radius: 5px;
+        }
+        .text-center.mt-4 {
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">¿Cuál prefieres?</h1>
+       
+        <div class="row">
+            <!-- Primera película -->
+            <div class="col-md-5">
+                <div class="card">
+                    <img src="https://image.tmdb.org/t/p/w500{{ movie1['poster_path'] }}" class="card-img-top" alt="{{ movie1['title'] }}">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ movie1['title'] }}</h5>
+                        <p class="card-text">{{ movie1['overview'] }}</p>
+                        <input type="hidden" id="movie1_id" value="{{ movie1['id'] }}">
+                        <button onclick="vote(document.getElementById('movie1_id').value)" class="btn btn-primary w-100">Votar por esta película</button>
+                    </div>
+                </div>
+            </div>
+           
+            <!-- Segunda película -->
+            <div class="col-md-5">
+                <div class="card">
+                    <img src="https://image.tmdb.org/t/p/w500{{ movie2['poster_path'] }}" class="card-img-top" alt="{{ movie2['title'] }}">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ movie2['title'] }}</h5>
+                        <p class="card-text">{{ movie2['overview'] }}</p>
+                        <input type="hidden" id="movie2_id" value="{{ movie2['id'] }}">
+                        <button onclick="vote(document.getElementById('movie2_id').value)" class="btn btn-primary w-100">Votar por esta película</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botón para cambiar opciones -->
+        <div class="text-center mt-4">
+            <form method="GET" action="/change">
+                <button type="submit" class="btn btn-secondary">Cambiar opciones</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+<script>
+    function vote(movieId) {
+        fetch('/vote', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ movie_id: movieId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.redirect) {
+                window.location.href = data.redirect;
+            }
+        })
+        .catch(error => console.error('Error al enviar el voto:', error));
+    }
+</script>
+</html>

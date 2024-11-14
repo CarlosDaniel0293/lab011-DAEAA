@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recomendaciones de Películas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            color: #2c3e50;
+            font-size: 36px;
+        }
+        .movies-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 0;
+            list-style: none;
+        }
+        .movie-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .movie-card:hover {
+            transform: translateY(-10px);
+        }
+        .movie-card img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+        .movie-card .details {
+            padding: 15px;
+        }
+        .movie-card .details h3 {
+            margin: 0;
+            font-size: 20px;
+            color: #34495e;
+        }
+        .movie-card .details p {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin: 10px 0;
+        }
+        .movie-card .details .actors {
+            font-size: 14px;
+            color: #2980b9;
+        }
+        .back-button {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px 20px;
+            text-align: center;
+            background-color: #3498db;
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>¡Estas son tus recomendaciones de películas!</h1>
+            <p>Basado en los votos que diste, aquí tienes algunas sugerencias para tu próxima película.</p>
+        </div>
+        <ul class="movies-list">
+            {% for movie in recommendations %}
+                <li class="movie-card">
+                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+                    <div class="details">
+                        <h3>{{ movie.title }}</h3>
+                        <p><strong>Sinopsis:</strong> {{ movie.overview }}</p>
+                        <p><strong>Director:</strong> {{ movie.director }}</p>
+                        <p><strong>Actores:</strong> {{ movie.actors | join(', ') }}</p>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="/" class="back-button">Volver al inicio</a>
+    </div>
+</body>
+</html>
